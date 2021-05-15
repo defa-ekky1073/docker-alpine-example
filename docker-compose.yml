@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+    web:
+        build: 
+            context: .
+            dockerfile: nginx
+        ports:
+            - "8008:80"
+        volumes:
+            - ./.dist/:/dist/
+            - ./.nginx/:/etc/nginx/conf.d/
+        links: 
+            - php
+            - db
+    php:
+        build: 
+            context: .
+            dockerfile: php-fpm
+        expose:
+            - "9000"
+        volumes:
+            - ./.dist/:/dist/
+    db:
+        build: 
+            context: .
+            dockerfile: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: testroot
+            MYSQL_DATABASE: testdb
+            MYSQL_USER: testusr
+            MYSQL_PASSWORD: testpwd
+        expose:
+            - "3306"
+        volumes:
+            - ./.mysql:/var/lib/mysql
+        restart: always

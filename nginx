@@ -1,0 +1,11 @@
+FROM alpine:latest
+
+LABEL maintainer="Ekky Defa Rizkyan <defa.ekky1073@gmail.com>"
+
+RUN apk update \
+    && apk add nginx \
+    && rm -rf /var/cache/apk/* \
+    && echo "daemon off;" >> /etc/nginx/nginx.conf
+
+EXPOSE 80
+CMD [ "nginx","-g","pid /tmp/nginx.pid;"]

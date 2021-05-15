@@ -1,0 +1,16 @@
+FROM alpine:latest
+
+LABEL maintainer="Ekky Defa Rizkyan <defa.ekky1073@gmail.com>"
+
+RUN apk update \
+    && apk add mariadb mariadb-client mariadb-server-utils \
+    && rm -rf /var/cache/apk/*
+
+ADD config/run.sh /scripts/run.sh
+RUN chmod -R 755 /scripts
+
+EXPOSE 3306
+
+VOLUME ["/var/lib/mysql"]
+
+CMD [ "sh","/scripts/run.sh" ]
